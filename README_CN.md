@@ -13,6 +13,18 @@
 
 ---
 
+<p align="center">
+  <img src="./docs/screenshots/dashboard-dark.png" alt="MuseDeck 深色毛玻璃工作台" width="100%" />
+</p>
+
+<details>
+<summary>点击查看浅色模式预览</summary>
+<br />
+<p align="center">
+  <img src="./docs/screenshots/dashboard-light.png" alt="MuseDeck 浅色毛玻璃工作台" width="100%" />
+</p>
+</details>
+
 **MuseDeck** 是一款 100% 本地运行的 Windows 轻量化多账号管理与 Agent 浏览器指挥台，采用 **Python Core + Windows 原生 WebView2** 架构与磨砂毛玻璃现代交互界面。无需捆绑几百 MB 的魔改内核，直接调度本机原生 Chrome / Edge 实现物理级 Profile 隔离。
 
 ## 核心功能

@@ -20,6 +20,18 @@
 
 ---
 
+<p align="center">
+  <img src="./docs/screenshots/dashboard-dark.png" alt="MuseDeck Dark Mode" width="100%" />
+</p>
+
+<details>
+<summary>Preview Clean Light Theme</summary>
+<br />
+<p align="center">
+  <img src="./docs/screenshots/dashboard-light.png" alt="MuseDeck Light Mode" width="100%" />
+</p>
+</details>
+
 **MuseDeck** is a privacy-first, local-only Windows desktop command deck built with **Python + native Windows WebView2**. Instead of bundling a bloated 300 MB custom browser, it orchestrates your native Chrome / Edge into completely isolated workspaces with frosted-glass Material Design 3 ergonomics, automatic **Meta Muse weekly & additional token quota tracking**, **same-IP conflict protection**, and a built-in **CDP + Local HTTP API** for AI agents.
 
 ## Features
