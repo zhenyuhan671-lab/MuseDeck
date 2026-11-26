@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MuseDeck</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 柔和工业氛围弥散光背景 -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-yellow"></div>
+    <div class="orb orb-cyan"></div>
+    <div class="orb orb-slate"></div>
+  </div>
+
+  <div class="app-shell">
+    <!-- 左侧固定极简悬浮导航轨 -->
+    <aside class="nav-rail" aria-label="主导航">
+      <div class="brand-badge" title="MuseDeck">
+        <svg viewBox="0 0 40 40" width="24" height="24" fill="none" aria-hidden="true">
+          <path d="M8 30V10h5.2l6.8 9.8L26.8 10H32v20h-4.8V18.2L20 28.4l-7.2-10.2V30H8Z" fill="currentColor"/>
+          <rect x="8" y="33" width="24" height="2.4" rx="1.2" fill="#38BDF8"/>
+        </svg>
+      </div>
+
+      <nav class="nav-items">
+        <button type="button" class="nav-btn active" data-view="accounts" title="账号工作台">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          <span>工作台</span>
+        </button>
+        <button type="button" class="nav-btn" data-view="health" title="网络与环境诊断">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <span>诊断</span>
+        </button>
+        <button type="button" class="nav-btn" data-view="settings" title="系统与代理设置">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>设置</span>
+        </button>
+      </nav>
+
+      <div class="nav-footer">
+        <button type="button" class="icon-circle-btn" id="btnThemeToggle" title="切换深色 / 浅色主题">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-area">
+      <!-- 视图 1：账号工作台 -->
+      <section class="view active" id="view-accounts">
+        <!-- 谷歌 M3 顶部融合胶囊栏 -->
+        <header class="topbar glass">
+          <div class="search-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="searchInput" placeholder="搜索账号、备注、邮箱..." autocomplete="off" />
+          </div>
+
+          <div class="status-pills">
+            <span class="stat-chip" id="statTotal">0 节点</span>
+            <span class="stat-chip stat-active" id="statRunning">0 运行</span>
+            <span class="stat-chip stat-mem" id="statMem" hidden>0 MB</span>
+            <span class="stat-chip stat-proxy" id="statProxy">HTTP:7892</span>
+          </div>
+
+          <div class="top-actions">
+            <button type="button" class="pill-btn ghost" id="btnNextIdle" title="一键启动下一个本周额度充裕的空闲 Muse 账号">空闲号</button>
+            <button type="button" class="pill-btn ghost" id="btnViewMode" title="切换毛玻璃卡片 / 极客监控表格">表格</button>
+            <button type="button" class="pill-btn ghost" id="btnPrivacyLock" title="一键隐私隐身锁（录屏/离座防泄露）">隐私锁</button>
+            <button type="button" class="pill-btn ghost" id="btnTile" title="自动网格平铺已打开的浏览器窗口">平铺</button>
+            <button type="button" class="pill-btn ghost" id="btnOpenAll" title="按安全间隔批量启动">全开</button>
+            <button type="button" class="pill-btn ghost" id="btnCloseAll" title="异步优雅关闭全部窗口">全关</button>
+            <button type="button" class="pill-btn primary" id="btnNewAccount">+ 新建节点</button>
+          </div>
+        </header>
+
+        <!-- 快捷书签 & 多窗口一键同步广播栏 -->
+        <div class="quick-bar">
+          <div class="filter-chips" id="filterChips">
+            <button type="button" class="chip active" data-filter="all">全部</button>
+            <button type="button" class="chip" data-filter="running">运行中</button>
+          </div>
+
+          <div class="broadcast-box glass-subtle">
+            <div class="bookmarks-row" id="bookmarksRow"></div>
+            <div class="broadcast-input-wrap">
+              <input type="url" id="broadcastUrl" placeholder="输入网址回车，所有运行窗口同步打开..." />
+              <button type="button" class="mini-send-btn" id="btnBroadcast" title="同步打开到所有运行中窗口">同步</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 毛玻璃账号卡片网格 / 极客监控表格容器 -->
+        <div class="cards-grid" id="cardsGrid"></div>
+        <div class="table-wrap glass" id="tableWrap" hidden>
+          <table class="deck-table">
+            <thead>
+              <tr>
+                <th>节点</th>
+                <th>状态</th>
+                <th>内存</th>
+                <th>当前页面</th>
+                <th>代理 / 延迟</th>
+                <th>Agent CDP</th>
+                <th style="text-align:right">操作</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 视图 2：网络与环境诊断 -->
+      <section class="view" id="view-health">
+        <div class="page-head">
+          <div>
+            <h1>网络与环境诊断</h1>
+            <p>检测本地 Chromium 内核、代理连通性延迟，并自动扫描活跃代理端口</p>
+          </div>
+          <div class="page-head-actions">
+            <button type="button" class="pill-btn ghost" id="btnOpenIpSite">查看公网 IP</button>
+            <button type="button" class="pill-btn primary" id="btnRunHealth">开始全面自检</button>
+          </div>
+        </div>
+
+        <div class="health-grid">
+          <div class="panel glass">
+            <div class="panel-title">核心环境报告</div>
+            <div class="diag-list" id="diagList">
+              <div class="empty-hint">点击右上角「开始全面自检」运行检测</div>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <div class="panel-title">本地活跃代理端口</div>
+            <p class="panel-sub" id="portScanStatus">支持自动探测 Clash Verge (7892)、Clash (7890)、v2rayN (10808) 等 17 个常见端口</p>
+            <div class="port-chips" id="portChips"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 视图 3：系统设置 -->
+      <section class="view" id="view-settings">
+        <div class="page-head">
+          <div>
+            <h1>系统与代理设置</h1>
+            <p>全局路由策略、防风控隐私参数、本地插件同步与备份恢复</p>
+          </div>
+          <button type="button" class="pill-btn primary" id="btnSaveSettings">保存设置</button>
+        </div>
+
+        <div class="settings-grid">
+          <div class="panel glass">
+            <div class="panel-title">全局代理路由</div>
+            <div class="form-row">
+              <label for="cfgProxyMode">代理模式</label>
+              <select id="cfgProxyMode">
+                <option value="local">本地代理客户端 (推荐)</option>
+                <option value="system">跟随 Windows 系统代理</option>
+                <option value="off">直连 / TUN 虚拟网卡</option>
+              </select>
+            </div>
+            <div class="form-row-3">
+              <div>
+                <label for="cfgProxyType">协议</label>
+                <select id="cfgProxyType">
+                  <option value="http">HTTP</option>
+                  <option value="socks5">SOCKS5</option>
+                </select>
+              </div>
+              <div>
+                <label for="cfgProxyHost">主机</label>
+                <input type="text" id="cfgProxyHost" placeholder="127.0.0.1" />
+              </div>
+              <div>
+                <label for="cfgProxyPort">端口</label>
+                <input type="number" id="cfgProxyPort" min="1" max="65535" />
+              </div>
+            </div>
+            <div class="preset-row">
+              <button type="button" class="chip" data-preset="http,127.0.0.1,7892">Clash Verge 7892</button>
+              <button type="button" class="chip" data-preset="http,127.0.0.1,7890">Clash 7890</button>
+              <button type="button" class="chip" data-preset="http,127.0.0.1,10808">v2rayN 10808</button>
+              <button type="button" class="chip" data-preset="socks5,127.0.0.1,1080">SOCKS5 1080</button>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <div class="panel-title">防风控与启动偏好</div>
+            <div class="form-row">
+              <label for="cfgHomeUrl">默认起始页</label>
+              <input type="url" id="cfgHomeUrl" placeholder="https://muse.ai" />
+            </div>
+            <div class="form-row">
+              <label for="cfgBatchInterval">批量启动间隔 (秒)</label>
+              <input type="number" id="cfgBatchInterval" step="0.5" min="0.3" max="10" />
+            </div>
+            <label class="switch-row">
+              <span>禁止 WebRTC 泄漏真实 IP</span>
+              <input type="checkbox" id="cfgWebrtc" />
+            </label>
+            <label class="switch-row">
+              <span>伪装英文环境 (en-US)</span>
+              <input type="checkbox" id="cfgLangEn" />
+            </label>
+            <label class="switch-row">
+              <span>移除自动化机器人特征</span>
+              <input type="checkbox" id="cfgAntiBot" />
+            </label>
+            <label class="switch-row">
+              <span>开启 CDP 自动巡检与额度同步（关闭即 100% 原生纯净模式）</span>
+              <input type="checkbox" id="cfgCdpEnabled" />
+            </label>
+          </div>
+
+          <div class="panel glass">
+            <div class="panel-title">浏览器路径与数据备份</div>
+            <div class="form-row">
+              <label for="cfgChromePath">Chrome 路径（留空自动识别）</label>
+              <input type="text" id="cfgChromePath" placeholder="自动识别系统 Chrome" />
+            </div>
+            <div class="form-row">
+              <label for="cfgEdgePath">Edge 路径（留空自动识别）</label>
+              <input type="text" id="cfgEdgePath" placeholder="自动识别系统 Edge" />
+            </div>
+            <div class="backup-actions">
+              <button type="button" class="pill-btn ghost" id="btnExportLight">导出轻量备份</button>
+              <button type="button" class="pill-btn ghost" id="btnExportFull">导出完整备份(含登录态)</button>
+              <button type="button" class="pill-btn ghost" id="btnImportBackup">导入备份恢复</button>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <div class="panel-title">本地 Agent HTTP 调度 API</div>
+            <p class="panel-sub">供 Playwright / n8n / AI Agent 直接调度已登录浏览器池（默认开启，仅监听本机 127.0.0.1）</p>
+            <div class="diag-row">
+              <span class="diag-tag ok">GET /api/nodes</span>
+              <span class="diag-detail">http://127.0.0.1:18900/api/nodes</span>
+            </div>
+            <div class="diag-row">
+              <span class="diag-tag ok">POST /start · /stop</span>
+              <span class="diag-detail">http://127.0.0.1:18900/api/nodes/&lt;id&gt;/start</span>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <div class="panel-title">未打包扩展全局挂载（如 museflow）</div>
+            <p class="panel-sub">选择本地开源未打包 Chrome 扩展目录，所有隔离账号启动时将自动挂载</p>
+            <div class="plugin-toolbar">
+              <button type="button" class="pill-btn primary" id="btnAddUnpacked">+ 挂载扩展目录</button>
+            </div>
+            <div class="plugin-list" id="unpackedList">
+              <div class="empty-hint">暂未挂载本地未打包扩展</div>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <div class="panel-title">本机 Chrome 扩展快捷同步</div>
+            <p class="panel-sub">自动读取主 Chrome 的 manifest.json 显示真实名称，一键同步到指定账号</p>
+            <div class="plugin-toolbar">
+              <button type="button" class="pill-btn ghost" id="btnScanPlugins">扫描扩展</button>
+              <select id="pluginTargetAcc"></select>
+              <button type="button" class="pill-btn primary" id="btnInstallPlugins">同步勾选扩展</button>
+            </div>
+            <div class="plugin-list" id="pluginList">
+              <div class="empty-hint">点击「扫描扩展」读取本地 Chrome 插件</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 原生 <dialog> 模态框 (遵循 modern-web-guidance: closedby="any" + showModal + 无冗余 ARIA) -->
+  <dialog id="accountDialog" class="glass-dialog" closedby="any" aria-labelledby="dlgTitle">
+    <form method="dialog" id="accountForm">
+      <div class="dlg-head">
+        <h1 id="dlgTitle">编辑节点</h1>
+        <button type="button" class="icon-circle-btn sm" id="btnDlgClose" aria-label="关闭">✕</button>
+      </div>
+
+      <!-- 抽屉顶部快捷动作区（低频管理动作全部收纳于此，卡片保持极致干净） -->
+      <div class="drawer-quick-actions" id="drawerQuickActions" hidden>
+        <button type="button" class="chip" id="actDrawerSeed" title="新建账号时自动复制此号的插件与书签（不复制登录态）">设为默认插件模板</button>
+        <button type="button" class="chip" id="actDrawerCopyPrompt">复制派活指令</button>
+        <button type="button" class="chip" id="actDrawerCopyCred">复制账密</button>
+        <button type="button" class="chip" id="actDrawerCookieExp">导出会话</button>
+        <button type="button" class="chip" id="actDrawerCookieImp">导入会话</button>
+        <button type="button" class="chip" id="actDrawerClone">克隆配置</button>
+        <button type="button" class="chip" id="actDrawerClean">清理缓存</button>
+        <button type="button" class="chip danger-chip" id="actDrawerDelete">删除节点</button>
+      </div>
+
+      <div class="dlg-body">
+        <div class="form-row-2">
+          <div>
+            <label for="accName">账号名称</label>
+            <input type="text" id="accName" required autofocus placeholder="例如：主力运营号" />
+          </div>
+          <div>
+            <label for="accGroup">所属分组</label>
+            <input type="text" id="accGroup" placeholder="默认分组" />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div>
+            <label for="accBrowser">浏览器内核</label>
+            <select id="accBrowser">
+              <option value="chrome">Google Chrome</option>
+              <option value="edge">Microsoft Edge</option>
+            </select>
+          </div>
+          <div>
+            <label for="accVipExpire">VIP 到期日（到期前提醒）</label>
+            <input type="date" id="accVipExpire" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="accNote">备注信息</label>
+          <input type="text" id="accNote" placeholder="用途、地区或备忘" />
+        </div>
+
+        <div class="form-section-label">Muse 额度与 Agent 专职角色</div>
+        <div class="form-row-3">
+          <div>
+            <label for="accMusePlan">套餐档位</label>
+            <select id="accMusePlan">
+              <option value="free">Free 免费</option>
+              <option value="power">Power ($20)</option>
+              <option value="max">Maximum ($100)</option>
+            </select>
+          </div>
+          <div>
+            <label for="accQuotaStatus">本周额度</label>
+            <select id="accQuotaStatus">
+              <option value="ok">充裕</option>
+              <option value="low">偏低</option>
+              <option value="empty">已耗尽</option>
+            </select>
+          </div>
+          <div>
+            <label for="accResetDay">重置日</label>
+            <select id="accResetDay">
+              <option value="">未设</option>
+              <option value="周一">周一</option>
+              <option value="周二">周二</option>
+              <option value="周三">周三</option>
+              <option value="周四">周四</option>
+              <option value="周五">周五</option>
+              <option value="周六">周六</option>
+              <option value="周日">周日</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="accAgentRole">Agent 专职角色（Soul 定位）</label>
+          <input type="text" id="accAgentRole" placeholder="例如：视频创作 / 晨间情报 / 选品比价 / 邮箱秘书" />
+        </div>
+        <div class="form-row">
+          <label for="accAgentPrompts">Soul 规则 / 常用派活指令（卡片支持一键复制）</label>
+          <textarea id="accAgentPrompts" rows="3" placeholder="粘贴该号专属的 Muse Soul 设定或常用任务指令..."></textarea>
+        </div>
+
+        <div class="form-section-label">账密保险箱（本地保存 · 一键复制）</div>
+        <div class="form-row-2">
+          <div>
+            <label for="accLoginEmail">登录邮箱 / 账号</label>
+            <input type="text" id="accLoginEmail" placeholder="name@example.com" />
+          </div>
+          <div>
+            <label for="accLoginPass">登录密码</label>
+            <input type="password" id="accLoginPass" placeholder="本地保存，支持一键复制" />
+          </div>
+        </div>
+
+        <div class="form-section-label">独立代理出口（支持住宅 IP 账密认证）</div>
+        <div class="form-row">
+          <select id="accProxyMode">
+            <option value="global">跟随全局代理设置</option>
+            <option value="direct">强制直连（不走代理）</option>
+            <option value="custom">自定义独立代理</option>
+          </select>
+        </div>
+
+        <div id="customProxyFields" class="custom-proxy-fields" hidden>
+          <div class="form-row-3">
+            <select id="accProxyType">
+              <option value="http">HTTP</option>
+              <option value="socks5">SOCKS5</option>
+            </select>
+            <input type="text" id="accProxyHost" placeholder="127.0.0.1" />
+            <input type="number" id="accProxyPort" min="1" max="65535" placeholder="7892" />
+          </div>
+          <div class="form-row-2">
+            <input type="text" id="accProxyUser" placeholder="代理用户名（选填）" />
+            <input type="password" id="accProxyPass" placeholder="代理密码（选填）" />
+          </div>
+        </div>
+
+        <div class="form-section-label">启动与指纹</div>
+        <div class="form-row-2">
+          <div>
+            <label for="accCustomUrl">专属起始页（留空跟随全局）</label>
+            <input type="url" id="accCustomUrl" placeholder="https://muse.ai" />
+          </div>
+          <div>
+            <label for="accWinSize">启动分辨率</label>
+            <select id="accWinSize">
+              <option value="">跟随默认</option>
+              <option value="1440,900">1440 × 900</option>
+              <option value="1280,800">1280 × 800</option>
+              <option value="1600,960">1600 × 960</option>
+              <option value="1080,760">1080 × 760</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>识别色</label>
+          <div class="color-swatches" id="colorSwatches"></div>
+        </div>
+
+        <label class="switch-row" id="seedInheritRow" hidden>
+          <span>新建时自动继承「默认插件模板」（仅复制插件与书签，不复制登录态）</span>
+          <input type="checkbox" id="accInheritSeed" checked />
+        </label>
+      </div>
+
+      <div class="dlg-foot">
+        <button type="button" class="pill-btn ghost" id="btnDlgCancel">取消</button>
+        <button type="submit" class="pill-btn primary" value="save">保存更改</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 极简 Toast 容器 -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
